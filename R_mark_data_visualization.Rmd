@@ -5,7 +5,7 @@ date: "5/8/2022"
 output: html_document
 ---
 
-```{r AM D3}
+```{r}
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -487,23 +487,223 @@ mean_tot_N3_231_R_Day3<- (sum(d_nbd_n3_R3_231_meanint$meanIntnbd1/d_draq_n3_R3_2
 ```{r plot}
 #plot the data
 mean_total_Aligned_Day3<- (mean_tot_N1_231_A_Day3+ mean_tot_N2_231_A_Day3+ mean_tot_N3_231_A_Day3)/3
+conc_day3_A<- c(mean_N1_231_A_Day3, mean_N2_231_A_Day3, mean_N3_231_A_Day3)
 mean_total_Random_Day3<- (mean_tot_N1_231_R_Day3+ mean_tot_N2_231_R_Day3+ mean_tot_N3_231_R_Day3)/3
+conc_day3_R<-c(mean_N1_231_R_Day3,mean_N2_231_R_Day3, mean_N3_231_R_Day3)
 mean_total_AlignedMat_Day3<-(mean_tot_N1_231_AM_Day3+mean_tot_N2_231_AM_Day3+mean_tot_N3_231_AM_Day3)/3
+conc_day3_AM<- c(mean_N1_231_AM_Day3, mean_N2_231_AM_Day3, mean_N3_231_AM_Day3)
 mean_total_RandomMat_Day3<-(mean_tot_N1_231_RM_Day3+mean_tot_N2_231_RM_Day3+mean_tot_N3_231_RM_Day3)/3
+conc_day3_RM<- c(mean_N1_231_RM_Day3, mean_N2_231_RM_Day3, mean_N3_231_RM_Day3)
 
 
 mean_total_Aligned_Day5<- (mean_tot_N1_231_A_Day5+ mean_tot_N2_231_A_Day5+ mean_tot_N3_231_A_Day5)/3
+conc_day5_A<-c(mean_N1_231_A_Day5, mean_N2_231_A_Day5, mean_N3_231_A_Day5)
 mean_total_Random_Day5<- (mean_tot_N1_231_R_Day5+ mean_tot_N2_231_R_Day5+ mean_tot_N3_231_R_Day5)/3
+conc_day5_R<-c(mean_N1_231_R_Day5, mean_N2_231_R_Day5, mean_N3_231_R_Day5)
 mean_total_AlignedMat_Day5<-(mean_tot_N1_231_AM_Day5+mean_tot_N2_231_AM_Day5+mean_tot_N3_231_R_Day5)/3
+conc_day5_AM<-c(mean_N1_231_AM_Day5, mean_N2_231_AM_Day5, mean_N3_231_AM_Day5)
 mean_total_RandomMat_Day5<-(mean_tot_N1_231_RM_Day5+mean_tot_N2_231_RM_Day5+mean_tot_N3_231_RM_Day5)/3
+conc_day5_RM<-c(mean_N1_231_RM_Day5, mean_N2_231_RM_Day5, mean_N3_231_RM_Day5)
 
 df3<- c(mean_total_Random_Day3, mean_total_Aligned_Day3, mean_total_RandomMat_Day3, mean_total_AlignedMat_Day3)
 df5<- c(mean_total_Random_Day5, mean_total_Aligned_Day5, mean_total_RandomMat_Day5, mean_total_AlignedMat_Day5)
+df_total<- cbind(df3,df5)
+rownames(df_total) <- c('Aligned','Random','Aligned_Mat', 'Random_Mat')
+colnames(df_total)<- c('Day3', 'Day5')
+df3_conc<-cbind(conc_day3_A,conc_day3_R,conc_day3_AM,conc_day3_RM)
+colnames(df3_conc) <- c('Aligned','Random','Aligned_Mat', 'Random_Mat')
+
+df5_conc<-cbind(conc_day5_A,conc_day5_R,conc_day5_AM,conc_day5_RM)
+colnames(df5_conc) <- c('Aligned','Random','Aligned_Mat', 'Random_Mat')
+
+total<-cbind.data.frame(df3_conc, df5_conc)
+total<-as.data.frame(total)
+se <- function(x) sqrt(var(x) / length(x))
+std_errs<-c(se(conc_day3_A), se(conc_day3_R), se(conc_day3_AM), se(conc_day3_RM), se(conc_day5_A), se(conc_day5_R), se(conc_day5_AM), se(conc_day5_RM))
+bar_plot_fig<-barplot(df_total, 
+        col=colors()[c(23,89,12,17)] , 
+        border="white", 
+        font.axis=2, 
+        beside=T, 
+        legend=rownames(df_total), 
+        xlab='group',
+        ylab="Integrated NBD Intensity per Cell",
+        xlim = c(0, 18),
+        font.lab=2)
+arrows(bar_plot_fig, df_total+std_errs, bar_plot_fig, df_total-std_errs, angle=90, code=3, length=0.06, col="black")
+
+R_A_Day3<- t.test(conc_day3_A,conc_day3_R)
+R_A_Day3
+summary(R_A_Day3)
+RM_AM_Day3<- t.test(conc_day3_AM, conc_day3_RM)
+RM_AM_Day3
+
+R_A_Day5<- t.test(conc_day5_A,conc_day5_R)
+R_A_Day5
+RM_AM_Day5<- t.test(conc_day5_AM, conc_day5_RM)
+RM_AM_Day5
+
+# total%>%
+#   .id = "id" %>%
+#   ggplot(aes()) +
+#   geom_bar(aes(fill = id), stat = "identity", position = "dodge2", width = 0.5) +
+#   geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd, width = 0.1, colour = id)) 
+# 
+# library(reshape2)
+# library(ggplot2)
+# total<-cbind.data.frame(df3_conc, df5_conc)
+# total<-as.data.frame(total)
 
 
-barplot(df3, main="Average Integrated Intensity per Nuclei 231 Day 3", names.arg =c( "Random","Aligned","RM","AM"), ylab="Integrated Intensity", col=c("#eb8060", "#b9e38d", "#a1e9f0", "#d9b1f0"))
+# barplot(df3, main="Average Integrated Intensity per Nuclei 231 Day 3", names.arg =c( "Random","Aligned","RM","AM"), ylab="Integrated Intensity", col=c("#eb8060", "#b9e38d", "#a1e9f0", "#d9b1f0"))
+# 
+# barplot(df5, main="Average Integrated Intensity per Nuclei 231 Day 5", names.arg =c("Random","Aligned","RM","AM"), ylab="Integrated Intensity", col=c("#eb8060", "#b9e38d", "#a1e9f0", "#d9b1f0"))
+# 
 
-barplot(df5, main="Average Integrated Intensity per Nuclei 231 Day 5", names.arg =c("Random","Aligned","RM","AM"), ylab="Integrated Intensity", col=c("#eb8060", "#b9e38d", "#a1e9f0", "#d9b1f0"))
+```
+
+
+
+```{r plot}
+#plot the data
+library(cowplot)
+df_nbd_A3<-as_tibble(c(d_nbd_n1_A3_231_meanint$meanIntnbd1,d_nbd_n2_A_231_meanint$meanIntnbd1, d_nbd_n3_A3_231_meanint$meanIntnbd1))
+df_dapi<- as_tibble(c(d_draq_n1_A3_231$n, d_draq_n2_A_231$n, d_draq_n3_A3_231$n))
+df_num_A3<- as_tibble(c(d_nbd_n1_A3_231_meanint$ImageNumber,d_nbd_n2_A_231_meanint$ImageNumber, d_nbd_n3_A3_231_meanint$ImageNumber))
+df_sum_A3<- bind_cols(df_num_A3, df_num_A3, df_dapi, df_nbd_A3)
+colnames(df_sum_A3) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+
+df_sum_A3<- as_data_frame(df_sum_A3)
+tit_A3<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Aligned Day 3"
+fig_A3<-ggplot(df_sum_A3, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,10))+labs(title = str_wrap(tit_A3, 40))
+fig_A3
+
+## RANDOM day 3
+df_nbd_R3<-as_tibble(c(d_nbd_n1_R3_231_meanint$meanIntnbd1,d_nbd_n2_R_231_meanint$meanIntnbd1, d_nbd_n3_R3_231_meanint$meanIntnbd1))
+dfR3_dapi<- as_tibble(c(d_draq_n1_R3_231$n, d_draq_n2_R_231$n, d_draq_n3_R3_231$n))
+df_num_R3<- as_tibble(c(d_nbd_n1_R3_231_meanint$ImageNumber,d_nbd_n2_R_231_meanint$ImageNumber, d_nbd_n3_R3_231_meanint$ImageNumber))
+df_sum_R3<- bind_cols(df_num_R3, df_num_R3, dfR3_dapi, df_nbd_R3)
+colnames(df_sum_R3) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+
+df_sum_R3<- as_data_frame(df_sum_R3)
+tit_R3<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Random Day 3"
+fig_R3<-ggplot(df_sum_R3, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,7))+labs(title = str_wrap(tit_R3, 40))
+fig_R3
+
+
+##RM Day 3
+df_nbd_RM3<-as_tibble(c(d_nbd_n1_RM3_231_meanint$meanIntnbd1,d_nbd_n2_RM_231_meanint$meanIntnbd1, d_nbd_n3_RM3_231_meanint$meanIntnbd1))
+dfRM3_dapi<- as_tibble(c(d_draq_n1_RM3_231$n, d_draq_n2_RM_231$n, d_draq_n3_RM3_231$n))
+df_num_RM3<- as_tibble(c(d_nbd_n1_RM3_231_meanint$ImageNumber,d_nbd_n2_RM_231_meanint$ImageNumber, d_nbd_n3_RM3_231_meanint$ImageNumber))
+df_sum_RM3<- bind_cols(df_num_RM3, df_num_RM3, dfRM3_dapi, df_nbd_RM3)
+colnames(df_sum_RM3) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+df_sum_RM3<- as_data_frame(df_sum_RM3)
+tit_RM3<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Random Matrigel Day 3"
+fig_RM3<-ggplot(df_sum_RM3, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,9))+labs(title = str_wrap(tit_RM3, 40))
+fig_RM3
+
+## Aligned Matrigel Day 3
+df_nbd_AM3<-as_tibble(c(d_nbd_n1_AM3_231_meanint$meanIntnbd1,d_nbd_n2_AM_231_meanint$meanIntnbd1, d_nbd_n3_AM3_231_meanint$meanIntnbd1))
+dfAM3_dapi<- as_tibble(c(d_draq_n1_AM3_231$n, d_draq_n2_AM_231$n, d_draq_n3_AM3_231$n))
+df_num_AM3<- as_tibble(c(d_nbd_n1_AM3_231_meanint$ImageNumber,d_nbd_n2_AM_231_meanint$ImageNumber, d_nbd_n3_AM3_231_meanint$ImageNumber))
+df_sum_AM3<- bind_cols(df_num_AM3, df_num_AM3, dfAM3_dapi, df_nbd_AM3)
+colnames(df_sum_AM3) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+df_sum_AM3<- as_data_frame(df_sum_AM3)
+tit_AM3<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Aligned Matrigel Day 3"
+fig_AM3<-ggplot(df_sum_AM3, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,9))+labs(title = str_wrap(tit_AM3, 40))
+fig_AM3
+
+plot_grid(fig_A3, fig_R3, labels = c('A', 'R'))
+plot_grid(fig_AM3, fig_RM3, labels = c('AM', 'RM'))
 
 
 ```
+
+```{r plot}
+#plot the data Day5
+library(cowplot)
+df_nbd_A5<-as_tibble(c(d_nbd_n1_A5_231_meanint$meanIntnbd1,d_nbd_n2_A5_231_meanint$meanIntnbd1, d_nbd_n3_A5_231_meanint$meanIntnbd1))
+df_dapi_A5<- as_tibble(c(d_draq_n1_A5_231$n, d_draq_n2_A5_231$n, d_draq_n3_A5_231$n))
+df_num_A5<- as_tibble(c(d_nbd_n1_A5_231_meanint$ImageNumber,d_nbd_n2_A5_231_meanint$ImageNumber, d_nbd_n3_A5_231_meanint$ImageNumber))
+df_sum_A5<- bind_cols(df_num_A5, df_num_A5, df_dapi_A5, df_nbd_A5)
+colnames(df_sum_A5) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+
+df_sum_A5<- as_data_frame(df_sum_A5)
+tit_A5<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Aligned Day 5"
+fig_A5<-ggplot(df_sum_A5, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,10))+labs(title = str_wrap(tit_A5, 40))
+fig_A5
+
+## RANDOM day 5
+df_nbd_R5<-as_tibble(c(d_nbd_n1_R5_231_meanint$meanIntnbd1,d_nbd_n2_R5_231_meanint$meanIntnbd1, d_nbd_n3_R5_231_meanint$meanIntnbd1))
+dfR5_dapi<- as_tibble(c(d_draq_n1_R5_231$n, d_draq_n2_R5_231$n, d_draq_n3_R5_231$n))
+df_num_R5<- as_tibble(c(d_nbd_n1_R5_231_meanint$ImageNumber,d_nbd_n2_R5_231_meanint$ImageNumber, d_nbd_n3_R5_231_meanint$ImageNumber))
+df_sum_R5<- bind_cols(df_num_R5, df_num_R5, dfR5_dapi, df_nbd_R5)
+colnames(df_sum_R5) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+
+df_sum_R5<- as_data_frame(df_sum_R5)
+tit_R5<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Random Day 5"
+fig_R5<-ggplot(df_sum_R5, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,10))+labs(title = str_wrap(tit_R5, 40))
+fig_R5
+
+
+##RM Day 3
+df_nbd_RM5<-as_tibble(c(d_nbd_n1_RM5_231_meanint$meanIntnbd1,d_nbd_n2_RM5_231_meanint$meanIntnbd1, d_nbd_n3_RM5_231_meanint$meanIntnbd1))
+dfRM5_dapi<- as_tibble(c(d_draq_n1_RM5_231$n, d_draq_n2_RM5_231$n, d_draq_n3_RM5_231$n))
+df_num_RM5<- as_tibble(c(d_nbd_n1_RM5_231_meanint$ImageNumber,d_nbd_n2_RM5_231_meanint$ImageNumber, d_nbd_n3_RM5_231_meanint$ImageNumber))
+df_sum_RM5<- bind_cols(df_num_RM5, df_num_RM5, dfRM5_dapi, df_nbd_RM5)
+colnames(df_sum_RM5) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+df_sum_RM5<- as_data_frame(df_sum_RM5)
+tit_RM5<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Random Matrigel Day 5"
+fig_RM5<-ggplot(df_sum_RM5, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,10))+labs(title = str_wrap(tit_RM5, 40))
+fig_RM5
+
+## Aligned Matrigel Day 
+df_nbd_AM5<-as_tibble(c(d_nbd_n1_AM5_231_meanint$meanIntnbd1,d_nbd_n2_AM5_231_meanint$meanIntnbd1, d_nbd_n3_AM5_231_meanint$meanIntnbd1))
+dfAM5_dapi<- as_tibble(c(d_draq_n1_AM5_231$n, d_draq_n2_AM5_231$n, d_draq_n3_AM5_231$n))
+df_num_AM5<- as_tibble(c(d_nbd_n1_AM5_231_meanint$ImageNumber,d_nbd_n2_AM5_231_meanint$ImageNumber, d_nbd_n3_AM5_231_meanint$ImageNumber))
+df_sum_AM5<- bind_cols(df_num_AM5, df_num_AM5, dfAM5_dapi, df_nbd_AM5)
+colnames(df_sum_AM5) <- c('Image_Number','Image__Number','num_of_nuclei', 'intensity')
+
+df_sum_AM5<- as_data_frame(df_sum_AM5)
+tit_AM5<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Aligned Matrigel Day 5"
+fig_AM5<-ggplot(df_sum_AM5, aes(x= Image_Number, y = Image__Number))+
+   geom_tile(fill="white", color = "red") +
+  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  scale_size_continuous(range = c(1,9))+labs(title = str_wrap(tit_AM5, 40))
+fig_AM5
+
+plot_grid(fig_A5, fig_R5, labels = c('A', 'R'))
+plot_grid(fig_AM5, fig_RM5, labels = c('AM', 'RM'))
+
+
+```
+
+
