@@ -27,7 +27,7 @@ mean_N2_231_AM_Day3<- d_nbd_n2_AM_231_meanint$meanIntnbd1/d_draq_n2_AM_231$n
 mean_tot_N2_231_AM_Day3<- (sum(d_nbd_n2_AM_231_meanint$meanIntnbd1/d_draq_n2_AM_231$n))/nrow(d_nbd_n2_AM_231_meanint)
 
 ```
-
+## Now do the same for Random Matrigel (Day 3)
 ```{r D3 RM}
 ## DAY 3, RM, N2, 231
 n2<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_RM_Day3NBDglucose.csv"
