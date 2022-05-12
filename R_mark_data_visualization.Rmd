@@ -4,11 +4,12 @@ author: "Madison Pickett"
 date: "5/8/2022"
 output: html_document
 ---
-#Individual Data Visualization Assignment (Noted: I have uploaded all the datasets in the repo, but did not change the links, so they link back to a repo that is being used for my research.)
+Individual Data Visualization Assignment (Noted: I have uploaded all the datasets in the repo, but did not change the links, so they link back to a repo that is being used for my research.)
 This project looks at the glucose uptake of 231 (highly invasive) cancer cells on biomaterial meshes of different alignments. Our hypothesis is that as the alignment increases (becomes more aligned), the cancer cells will adopt a more invasive phenotype and trend toward glycolysis. A major marker of glycolysis is glucose uptake, which can be measured using NBD glucose (a fluorescent glucose analog). This experiment looks at NBD uptake at a per cell level, at two different time points (Day 3 and Day 5). A python script was used to process the images, where many parameters concerning the NBD's properties were measured. We were specifically looking at the integrated intensity per cell. The number of cells was characterized by the number of Draq5 nuclei counted by the script (Draq5 is a fluorescent nuclear dye). From here the average intensities per cell were calculated on a per image basis and then by a per condition basis (Random, Aligned, Random Matrigel, Aligned Matrigel) for each biological replicate (n=2) and technical replicate (N=3).
 
 # Random Matrigel N=2 (Day 3)
 ```{r}
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -18,6 +19,122 @@ n1<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/My
 d_nbd_n2_AM_231<-read_csv(n1, col_names=TRUE)  #load in the NBD dataset
 d1<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_AM_Day3Draq5_nucleus.csv"
 d_draq_n2_AM_231<-read_csv(d1, col_names=TRUE) #load in the Draq5 dataset
+## DAY 3, RM, N2, 231
+n2<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_RM_Day3NBDglucose.csv"
+d_nbd_n2_RM_231<-read_csv(n2, col_names=TRUE)
+d2<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_RM_Day3Draq5_nucleus.csv"
+d_draq_n2_RM_231<-read_csv(d2, col_names=TRUE)
+## DAY 3, R, N2, 231
+n3<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day3NBDglucose.csv"
+d_nbd_n2_R_231<-read_csv(n3, col_names=TRUE)
+d3<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day3Draq5_nucleus.csv"
+d_draq_n2_R_231<-read_csv(d3, col_names=TRUE)
+## DAY 3, A, N2, 231
+n4<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day3NBDglucose.csv"
+d_nbd_n2_A_231<-read_csv(n4, col_names=TRUE)
+d4<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day3Draq5_nucleus.csv"
+d_draq_n2_A_231<-read_csv(d4, col_names=TRUE)
+## DAY 5, RM, N2, 231
+n5<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_Day5_N2_231-nbd.csv"
+d_nbd_n2_RM5_231<-read_csv(n5, col_names=TRUE)
+d5<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/N2_Day%205_RM_231_Draq5_nucleus.csv"
+d_draq_n2_RM5_231<-read_csv(d5, col_names=TRUE)
+## DAY 5, AM, N2, 231
+n6<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_AM_Day5NBDglucose.csv"
+d_nbd_n2_AM5_231<-read_csv(n6, col_names=TRUE)
+d6<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_AM_Day5Draq5_nucleus.csv"
+d_draq_n2_AM5_231<-read_csv(d6, col_names=TRUE)
+## DAY 5, A, N2, 231
+n7<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day5NBDglucose.csv"
+d_nbd_n2_A5_231<-read_csv(n7, col_names=TRUE)
+d7<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day5Draq5_nucleus.csv"
+d_draq_n2_A5_231<-read_csv(d7, col_names=TRUE)
+## DAY 5, R, N2, 231
+n8<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day5NBDglucose.csv"
+d_nbd_n2_R5_231<-read_csv(n8, col_names=TRUE)
+d8<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day5Draq5_nucleus.csv"
+d_draq_n2_R5_231<-read_csv(d8, col_names=TRUE)
+## DAY 5, R, N2, 231
+n9<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N1_NBDglucose.csv"
+d_nbd_n1_R5_231<-read_csv(n9, col_names=TRUE)
+d9<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N1_Draq5_nucleus.csv"
+d_draq_n1_R5_231<-read_csv(d9, col_names=TRUE)
+#Random Matrigel N=1 (Day 5)
+n10<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N1_NBDglucose.csv"
+d_nbd_n1_RM5_231<-read_csv(n10, col_names=TRUE)
+d10<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N1_Draq5_nucleus.csv"
+d_draq_n1_RM5_231<-read_csv(d10, col_names=TRUE)
+# Aligned Matrigel N=1 (Day 5)
+n11<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N1_NBDglucose.csv"
+d_nbd_n1_AM5_231<-read_csv(n11, col_names=TRUE)
+d11<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N1_Draq5_nucleus.csv"
+d_draq_n1_AM5_231<-read_csv(d11, col_names=TRUE)
+# Aligned N=1 (Day 5)
+n12<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N1_realNBDglucose.csv"
+d_nbd_n1_A5_231<-read_csv(n12, col_names=TRUE)
+d12<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N1_realDraq5_nucleus.csv"
+d_draq_n1_A5_231<-read_csv(d12, col_names=TRUE)
+# Aligned N=1 (Day 3)
+n13<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N1_NBDglucose.csv"
+d_nbd_n1_A3_231<-read_csv(n13, col_names=TRUE)
+d13<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N1_Draq5_nucleus.csv"
+d_draq_n1_A3_231<-read_csv(d13, col_names=TRUE)
+# Aligned Matrigel N=1 (Day 3)
+n14<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N1_NBDglucose.csv"
+d_nbd_n1_AM3_231<-read_csv(n14, col_names=TRUE)
+d14<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N1_Draq5_nucleus.csv"
+d_draq_n1_AM3_231<-read_csv(d14, col_names=TRUE)
+# Random Matrigel N=1 (Day 3)
+n15<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N1_realNBDglucose.csv"
+d_nbd_n1_RM3_231<-read_csv(n15, col_names=TRUE)
+d15<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N1_realDraq5_nucleus.csv"
+d_draq_n1_RM3_231<-read_csv(d15, col_names=TRUE)
+# Random N=1 (Day 3)
+n16<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N1_NBDglucose.csv"
+d_nbd_n1_R3_231<-read_csv(n15, col_names=TRUE)
+d16<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N1_Draq5_nucleus.csv"
+d_draq_n1_R3_231<-read_csv(d15, col_names=TRUE)
+## DAY 5, R, N3, 231
+n17<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N3_NBDglucose.csv"
+d_nbd_n3_R5_231<-read_csv(n17, col_names=TRUE)
+d17<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N3_Draq5_nucleus.csv"
+d_draq_n3_R5_231<-read_csv(d17, col_names=TRUE)
+# Random Matrigel N=3 (Day 5)
+n18<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N3_NBDglucose.csv"
+d_nbd_n3_RM5_231<-read_csv(n18, col_names=TRUE)
+d18<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N3_Draq5_nucleus.csv"
+d_draq_n3_RM5_231<-read_csv(d18, col_names=TRUE)
+# Aligned Matrigel N=3 (Day 5)
+n19<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N3_NBDglucose.csv"
+d_nbd_n3_AM5_231<-read_csv(n19, col_names=TRUE)
+d19<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N3_Draq5_nucleus.csv"
+d_draq_n3_AM5_231<-read_csv(d19, col_names=TRUE)
+# Aligned N=3 (Day 5)
+n20<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N3_NBDglucose.csv"
+d_nbd_n3_A5_231<-read_csv(n20, col_names=TRUE)
+d20<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N3_Draq5_nucleus.csv"
+d_draq_n3_A5_231<-read_csv(d20, col_names=TRUE)
+# Aligned N=3 (Day 3)
+n21<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N3_NBDglucose.csv"
+d_nbd_n3_A3_231<-read_csv(n21, col_names=TRUE)
+d21<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N3_Draq5_nucleus.csv"
+d_draq_n3_A3_231<-read_csv(d21, col_names=TRUE)
+# Aligned Matrigel N=3 (Day 3)
+n22<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N3_NBDglucose.csv"
+d_nbd_n3_AM3_231<-read_csv(n22, col_names=TRUE)
+d22<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N3_Draq5_nucleus.csv"
+d_draq_n3_AM3_231<-read_csv(d22, col_names=TRUE)
+# Random Matrigel N=3 (Day 3)
+n23<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N3_NBDglucose.csv"
+d_nbd_n3_RM3_231<-read_csv(n23, col_names=TRUE)
+d23<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N3_Draq5_nucleus.csv"
+d_draq_n3_RM3_231<-read_csv(d23, col_names=TRUE)
+# Random N=3 (Day 3)
+n24<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N3_NBDglucose.csv"
+d_nbd_n3_R3_231<-read_csv(n24, col_names=TRUE)
+d24<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N3_Draq5_nucleus.csv"
+d_draq_n3_R3_231<-read_csv(d24, col_names=TRUE)
+
 
 #Group the NBD thresholded fluorescence intensity by the image number or its respective image, then calculate the mean intensity of the integrated intensity within that image 
 d_nbd_n2_AM_231_meanint<- d_nbd_n2_AM_231%>%
@@ -38,12 +155,6 @@ mean_tot_N2_231_AM_Day3<- (sum(d_nbd_n2_AM_231_meanint$meanIntnbd1/d_draq_n2_AM_
 ```
 # Random Matrigel N=2 (Day 3)
 ```{r D3 RM}
-## DAY 3, RM, N2, 231
-n2<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_RM_Day3NBDglucose.csv"
-d_nbd_n2_RM_231<-read_csv(n2, col_names=TRUE)
-d2<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_RM_Day3Draq5_nucleus.csv"
-d_draq_n2_RM_231<-read_csv(d2, col_names=TRUE)
-
 d_nbd_n2_RM_231_meanint<- d_nbd_n2_RM_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -57,12 +168,6 @@ mean_tot_N2_231_RM_Day3<- (sum(d_nbd_n2_RM_231_meanint$meanIntnbd1/d_draq_n2_RM_
 ```
 # Random N=2 (Day 3)
 ```{r D3 R}
-## DAY 3, R, N2, 231
-n3<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day3NBDglucose.csv"
-d_nbd_n2_R_231<-read_csv(n3, col_names=TRUE)
-d3<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day3Draq5_nucleus.csv"
-d_draq_n2_R_231<-read_csv(d3, col_names=TRUE)
-
 d_nbd_n2_R_231_meanint<- d_nbd_n2_R_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -76,12 +181,6 @@ mean_tot_N2_231_R_Day3<- (sum(d_nbd_n2_R_231_meanint$meanIntnbd1/d_draq_n2_R_231
 ```
 # Aligned N=2 (Day 3)
 ```{r D3 A}
-## DAY 3, A, N2, 231
-n4<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day3NBDglucose.csv"
-d_nbd_n2_A_231<-read_csv(n4, col_names=TRUE)
-d4<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day3Draq5_nucleus.csv"
-d_draq_n2_A_231<-read_csv(d4, col_names=TRUE)
-
 d_nbd_n2_A_231_meanint<- d_nbd_n2_A_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -95,12 +194,6 @@ mean_tot_N2_231_A_Day3<- (sum(d_nbd_n2_A_231_meanint$meanIntnbd1/d_draq_n2_A_231
 ```
 # Random Matrigel N=2 (Day 5)
 ```{r D5 RM}
-## DAY 5, RM, N2, 231
-n5<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_Day5_N2_231-nbd.csv"
-d_nbd_n2_RM5_231<-read_csv(n5, col_names=TRUE)
-d5<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/N2_Day%205_RM_231_Draq5_nucleus.csv"
-d_draq_n2_RM5_231<-read_csv(d5, col_names=TRUE)
-
 d_nbd_n2_RM5_231_meanint<- d_nbd_n2_RM5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -115,12 +208,6 @@ mean_tot_N2_231_RM_Day5<- (sum(d_nbd_n2_RM5_231_meanint$meanIntnbd1/d_draq_n2_RM
 # Aligned Matrigel N=2 (Day 5)
 
 ```{r D5 AM}
-## DAY 5, AM, N2, 231
-n6<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_AM_Day5NBDglucose.csv"
-d_nbd_n2_AM5_231<-read_csv(n6, col_names=TRUE)
-d6<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_AM_Day5Draq5_nucleus.csv"
-d_draq_n2_AM5_231<-read_csv(d6, col_names=TRUE)
-
 d_nbd_n2_AM5_231_meanint<- d_nbd_n2_AM5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -135,12 +222,6 @@ mean_tot_N2_231_AM_Day5<- (sum(d_nbd_n2_AM5_231_meanint$meanIntnbd1/d_draq_n2_AM
 # Aligned N=2 (Day 5)
 
 ```{r D5 A}
-## DAY 5, A, N2, 231
-n7<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day5NBDglucose.csv"
-d_nbd_n2_A5_231<-read_csv(n7, col_names=TRUE)
-d7<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_A_Day5Draq5_nucleus.csv"
-d_draq_n2_A5_231<-read_csv(d7, col_names=TRUE)
-
 d_nbd_n2_A5_231_meanint<- d_nbd_n2_A5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -155,12 +236,6 @@ mean_tot_N2_231_A_Day5<- (sum(d_nbd_n2_A5_231_meanint$meanIntnbd1/d_draq_n2_A5_2
 # Random N=2 (Day 5)
 
 ```{r D5 R}
-## DAY 5, R, N2, 231
-n8<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day5NBDglucose.csv"
-d_nbd_n2_R5_231<-read_csv(n8, col_names=TRUE)
-d8<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/MyExptN2_231_R_Day5Draq5_nucleus.csv"
-d_draq_n2_R5_231<-read_csv(d8, col_names=TRUE)
-
 d_nbd_n2_R5_231_meanint<- d_nbd_n2_R5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -175,12 +250,6 @@ mean_tot_N2_231_R_Day5<- (sum(d_nbd_n2_R5_231_meanint$meanIntnbd1/d_draq_n2_R5_2
 ```
 # Random N=1 (Day 5)
 ```{r D5 R N1}
-## DAY 5, R, N2, 231
-n9<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N1_NBDglucose.csv"
-d_nbd_n1_R5_231<-read_csv(n9, col_names=TRUE)
-d9<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N1_Draq5_nucleus.csv"
-d_draq_n1_R5_231<-read_csv(d9, col_names=TRUE)
-
 d_nbd_n1_R5_231_meanint<- d_nbd_n1_R5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -195,10 +264,6 @@ mean_tot_N1_231_R_Day5<- (sum(d_nbd_n1_R5_231_meanint$meanIntnbd1/d_draq_n1_R5_2
 ```
 # Random Matrigel N=1 (Day 5)
 ```{r D5 RM N1}
-n10<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N1_NBDglucose.csv"
-d_nbd_n1_RM5_231<-read_csv(n10, col_names=TRUE)
-d10<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N1_Draq5_nucleus.csv"
-d_draq_n1_RM5_231<-read_csv(d10, col_names=TRUE)
 
 d_nbd_n1_RM5_231_meanint<- d_nbd_n1_RM5_231%>%
   group_by(ImageNumber)%>%
@@ -214,11 +279,6 @@ mean_tot_N1_231_RM_Day5<- (sum(d_nbd_n1_RM5_231_meanint$meanIntnbd1/d_draq_n1_RM
 ```
 # Aligned Matrigel N=1 (Day 5)
 ```{r D5 AM N1}
-n11<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N1_NBDglucose.csv"
-d_nbd_n1_AM5_231<-read_csv(n11, col_names=TRUE)
-d11<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N1_Draq5_nucleus.csv"
-d_draq_n1_AM5_231<-read_csv(d11, col_names=TRUE)
-
 d_nbd_n1_AM5_231_meanint<- d_nbd_n1_AM5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -234,11 +294,6 @@ mean_tot_N1_231_AM_Day5<- (sum(d_nbd_n1_AM5_231_meanint$meanIntnbd1/d_draq_n1_AM
 # Aligned N=1 (Day 5)
 
 ```{r D5 A N1}
-n12<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N1_realNBDglucose.csv"
-d_nbd_n1_A5_231<-read_csv(n12, col_names=TRUE)
-d12<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N1_realDraq5_nucleus.csv"
-d_draq_n1_A5_231<-read_csv(d12, col_names=TRUE)
-
 d_nbd_n1_A5_231_meanint<- d_nbd_n1_A5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -254,11 +309,6 @@ mean_tot_N1_231_A_Day5<- (sum(d_nbd_n1_A5_231_meanint$meanIntnbd1/d_draq_n1_A5_2
 # Aligned N=1 (Day 3)
 
 ```{r D3 A N1}
-n13<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N1_NBDglucose.csv"
-d_nbd_n1_A3_231<-read_csv(n13, col_names=TRUE)
-d13<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N1_Draq5_nucleus.csv"
-d_draq_n1_A3_231<-read_csv(d13, col_names=TRUE)
-
 d_nbd_n1_A3_231_meanint<- d_nbd_n1_A3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -273,11 +323,6 @@ mean_tot_N1_231_A_Day3<- (sum(d_nbd_n1_A3_231_meanint$meanIntnbd1/d_draq_n1_A3_2
 ```
 # Aligned Matrigel N=1 (Day 3)
 ```{r D3 AM N1}
-n14<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N1_NBDglucose.csv"
-d_nbd_n1_AM3_231<-read_csv(n14, col_names=TRUE)
-d14<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N1_Draq5_nucleus.csv"
-d_draq_n1_AM3_231<-read_csv(d14, col_names=TRUE)
-
 d_nbd_n1_AM3_231_meanint<- d_nbd_n1_AM3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -293,11 +338,6 @@ mean_tot_N1_231_AM_Day3<- (sum(d_nbd_n1_AM3_231_meanint$meanIntnbd1/d_draq_n1_AM
 # Random Matrigel N=1 (Day 3)
 
 ```{r D3 RM N1}
-n15<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N1_realNBDglucose.csv"
-d_nbd_n1_RM3_231<-read_csv(n15, col_names=TRUE)
-d15<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N1_realDraq5_nucleus.csv"
-d_draq_n1_RM3_231<-read_csv(d15, col_names=TRUE)
-
 d_nbd_n1_RM3_231_meanint<- d_nbd_n1_RM3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -313,11 +353,6 @@ mean_tot_N1_231_RM_Day3<- (sum(d_nbd_n1_RM3_231_meanint$meanIntnbd1/d_draq_n1_RM
 # Random N=1 (Day 3)
 
 ```{r D3 R N1}
-n16<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N1_NBDglucose.csv"
-d_nbd_n1_R3_231<-read_csv(n15, col_names=TRUE)
-d16<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N1_Draq5_nucleus.csv"
-d_draq_n1_R3_231<-read_csv(d15, col_names=TRUE)
-
 d_nbd_n1_R3_231_meanint<- d_nbd_n1_R3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -333,12 +368,6 @@ mean_tot_N1_231_R_Day3<- (sum(d_nbd_n1_R3_231_meanint$meanIntnbd1/d_draq_n1_R3_2
 # Random N=3 (Day 5)
 
 ```{r D5 R N3}
-## DAY 5, R, N3, 231
-n17<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N3_NBDglucose.csv"
-d_nbd_n3_R5_231<-read_csv(n17, col_names=TRUE)
-d17<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY5_231_N3_Draq5_nucleus.csv"
-d_draq_n3_R5_231<-read_csv(d17, col_names=TRUE)
-
 d_nbd_n3_R5_231_meanint<- d_nbd_n3_R5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -354,11 +383,6 @@ mean_tot_N3_231_R_Day5<- (sum(d_nbd_n3_R5_231_meanint$meanIntnbd1/d_draq_n3_R5_2
 # Random Matrigel N=3 (Day 5)
 
 ```{r D5 RM N3}
-n18<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N3_NBDglucose.csv"
-d_nbd_n3_RM5_231<-read_csv(n18, col_names=TRUE)
-d18<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY5_231_N3_Draq5_nucleus.csv"
-d_draq_n3_RM5_231<-read_csv(d18, col_names=TRUE)
-
 d_nbd_n3_RM5_231_meanint<- d_nbd_n3_RM5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -373,11 +397,6 @@ mean_tot_N3_231_RM_Day5<- (sum(d_nbd_n3_RM5_231_meanint$meanIntnbd1/d_draq_n3_RM
 ```
 # Aligned Matrigel N=3 (Day 5)
 ```{r D5 AM N3}
-n19<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N3_NBDglucose.csv"
-d_nbd_n3_AM5_231<-read_csv(n19, col_names=TRUE)
-d19<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY5_231_N3_Draq5_nucleus.csv"
-d_draq_n3_AM5_231<-read_csv(d19, col_names=TRUE)
-
 d_nbd_n3_AM5_231_meanint<- d_nbd_n3_AM5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -392,11 +411,6 @@ mean_tot_N3_231_AM_Day5<- (sum(d_nbd_n3_AM5_231_meanint$meanIntnbd1/d_draq_n3_AM
 ```
 # Aligned N=3 (Day 5)
 ```{r D5 A N3}
-n20<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N3_NBDglucose.csv"
-d_nbd_n3_A5_231<-read_csv(n20, col_names=TRUE)
-d20<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY5_231_N3_Draq5_nucleus.csv"
-d_draq_n3_A5_231<-read_csv(d20, col_names=TRUE)
-
 d_nbd_n3_A5_231_meanint<- d_nbd_n3_A5_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -411,11 +425,6 @@ mean_tot_N3_231_A_Day5<- (sum(d_nbd_n3_A5_231_meanint$meanIntnbd1/d_draq_n3_A5_2
 ```
 # Aligned N=3 (Day 3)
 ```{r D3 A N3}
-n21<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N3_NBDglucose.csv"
-d_nbd_n3_A3_231<-read_csv(n21, col_names=TRUE)
-d21<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/A_DAY3_231_N3_Draq5_nucleus.csv"
-d_draq_n3_A3_231<-read_csv(d21, col_names=TRUE)
-
 d_nbd_n3_A3_231_meanint<- d_nbd_n3_A3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -430,11 +439,6 @@ mean_tot_N3_231_A_Day3<- (sum(d_nbd_n3_A3_231_meanint$meanIntnbd1/d_draq_n3_A3_2
 ```
 # Aligned Matrigel N=3 (Day 3)
 ```{r D3 AM N3}
-n22<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N3_NBDglucose.csv"
-d_nbd_n3_AM3_231<-read_csv(n22, col_names=TRUE)
-d22<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/AM_DAY3_231_N3_Draq5_nucleus.csv"
-d_draq_n3_AM3_231<-read_csv(d22, col_names=TRUE)
-
 d_nbd_n3_AM3_231_meanint<- d_nbd_n3_AM3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -448,12 +452,7 @@ mean_N3_231_AM_Day3<- d_nbd_n3_AM3_231_meanint$meanIntnbd1/d_draq_n3_AM3_231$n
 mean_tot_N3_231_AM_Day3<- (sum(d_nbd_n3_AM3_231_meanint$meanIntnbd1/d_draq_n3_AM3_231$n))/nrow(d_nbd_n3_AM3_231_meanint)
 ```
 # Random Matrigel N=3 (Day 3)
-```{r D3 RM N3} 
-n23<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N3_NBDglucose.csv"
-d_nbd_n3_RM3_231<-read_csv(n23, col_names=TRUE)
-d23<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/RM_DAY3_231_N3_Draq5_nucleus.csv"
-d_draq_n3_RM3_231<-read_csv(d23, col_names=TRUE)
-
+```{r D3 RM N3}
 d_nbd_n3_RM3_231_meanint<- d_nbd_n3_RM3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -468,11 +467,6 @@ mean_tot_N3_231_RM_Day3<- (sum(d_nbd_n3_RM3_231_meanint$meanIntnbd1/d_draq_n3_RM
 ```
 # Random N=3 (Day 3)
 ```{r D3 R N3}
-n24<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N3_NBDglucose.csv"
-d_nbd_n3_R3_231<-read_csv(n24, col_names=TRUE)
-d24<- "https://raw.githubusercontent.com/mrpickett26/NBD_glucose_Analysis/main/R_DAY3_231_N3_Draq5_nucleus.csv"
-d_draq_n3_R3_231<-read_csv(d24, col_names=TRUE)
-
 d_nbd_n3_R3_231_meanint<- d_nbd_n3_R3_231%>%
   group_by(ImageNumber)%>%
   summarize(meanIntnbd1= mean(Intensity_IntegratedIntensity_NBDglucose, na.rm=TRUE))
@@ -485,8 +479,10 @@ mean_N3_231_R_Day3<- d_nbd_n3_R3_231_meanint$meanIntnbd1/d_draq_n3_R3_231$n
 
 mean_tot_N3_231_R_Day3<- (sum(d_nbd_n3_R3_231_meanint$meanIntnbd1/d_draq_n3_R3_231$n))/nrow(d_nbd_n3_R3_231_meanint)
 ```
-#A good way (but very basic) is to use a barplot to plot the means with error bars that represent the standard errors of the means. I did this below-- also I know there are probably cleaner ways to go about this, but I wanted standard error for the image aggregates instead of the concentated totals so I didn't use ggplot becuase it was easier for me to do custom error bars this way! 
+A good way (but very basic) is to use a barplot to plot the means with error bars that represent the standard errors of the means. I did this below-- also I know there are probably cleaner ways to go about this, but I wanted standard error for the image aggregates instead of the concentated totals so I didn't use ggplot becuase it was easier for me to do custom error bars this way! 
 ```{r plot}
+knitr::opts_chunk$set(echo = TRUE)
+
 #plot the data
 mean_total_Aligned_Day3<- (mean_tot_N1_231_A_Day3+ mean_tot_N2_231_A_Day3+ mean_tot_N3_231_A_Day3)/3
 conc_day3_A<- c(mean_N1_231_A_Day3, mean_N2_231_A_Day3, mean_N3_231_A_Day3)
@@ -547,10 +543,11 @@ RM_AM_Day5<- t.test(conc_day5_AM, conc_day5_RM)
 RM_AM_Day5
 
 ```
-##Actual Data Visualization
-#The data visualization can probably be spiced up a bit... it is still relatively boring data. I was orgininally wanting to do something more interactive that would change intensity of brightness, but wasn't really sure how it would be applicable to what I wanted to represent. The samples that included the matrigel coating are more similar to the breast microenvironment and are more supportive of cellular proliferation-- meaning there are a lot more cells per image. One issue with the script and this dataset is that when we are imaging, the z-planes of going through the scaffold can produce a lot of background fluorescence from the cells that are embedded in the scaffold (fluorescing in a different z plane). I thought it would be cool to do something where the number of cells and intensity was represented on a single plot. My best option was looking at a heat map where we can colormetrically represent the intensity and represent the number of cells per image using the size of the data points. 
+Actual Data Visualization: The data visualization can probably be spiced up a bit... it is still relatively boring data. I was orgininally wanting to do something more interactive that would change intensity of brightness, but wasn't really sure how it would be applicable to what I wanted to represent. The samples that included the matrigel coating are more similar to the breast microenvironment and are more supportive of cellular proliferation-- meaning there are a lot more cells per image. One issue with the script and this dataset is that when we are imaging, the z-planes of going through the scaffold can produce a lot of background fluorescence from the cells that are embedded in the scaffold (fluorescing in a different z plane). I thought it would be cool to do something where the number of cells and intensity was represented on a single plot. My best option was looking at a heat map where we can colormetrically represent the intensity and represent the number of cells per image using the size of the data points. 
 
 ```{r plot advanced Day 3}
+knitr::opts_chunk$set(echo = TRUE)
+
 #Need to rearrange some of the data to make it easier to plot in this way
 df_nbd_A3<-as_tibble(c(d_nbd_n1_A3_231_meanint$meanIntnbd1,d_nbd_n2_A_231_meanint$meanIntnbd1, d_nbd_n3_A3_231_meanint$meanIntnbd1))
 df_draq<- as_tibble(c(d_draq_n1_A3_231$n, d_draq_n2_A_231$n, d_draq_n3_A3_231$n))
@@ -603,11 +600,13 @@ df_sum_AM3<- as_data_frame(df_sum_AM3)
 tit_AM3<-"Heat Map and Size Plot for NBD Glucose Intensity and Number of Nuclei Aligned Matrigel Day 3"
 fig_AM3<-ggplot(df_sum_AM3, aes(x= Image_Number, y = Image__Number))+
    geom_tile(fill="white", color = "red") +
-  geom_point(aes(color = intensity, size = num_of_nuclei))+
+  geom_point(aes(color = num_of_nuclei, size = num_of_nuclei))+
   scale_size_continuous(range = c(1,9))+labs(title = str_wrap(tit_AM3, 25))
 ```
 
 ```{r plot advanced Day 5}
+knitr::opts_chunk$set(echo = TRUE)
+
 #plot the data Day5
 df_nbd_A5<-as_tibble(c(d_nbd_n1_A5_231_meanint$meanIntnbd1,d_nbd_n2_A5_231_meanint$meanIntnbd1, d_nbd_n3_A5_231_meanint$meanIntnbd1))
 df_draq_A5<- as_tibble(c(d_draq_n1_A5_231$n, d_draq_n2_A5_231$n, d_draq_n3_A5_231$n))
@@ -663,23 +662,31 @@ fig_AM5<-ggplot(df_sum_AM5, aes(x= Image_Number, y = Image__Number))+
   geom_point(aes(color = intensity, size = num_of_nuclei))+
   scale_size_continuous(range = c(1,9))+labs(title = str_wrap(tit_AM5, 25))
 ```
-#Now it is useful to plot the graphs for Day 3. Between aligned and random, the intensity is less for the aligned condition than for the random, but there are more nuclei in the aligned case. Between the Aligned Matrigel and Random Matrigel case, the intensity is higher for the Aligned Matrigel (which supports our hypothesis). Additionally there are slightly more nuclei for the Aligned Matrigel case. 
+Now it is useful to plot the graphs for Day 3. Between aligned and random, the intensity is less for the aligned condition than for the random, but there are more nuclei in the aligned case. Between the Aligned Matrigel and Random Matrigel case, the intensity is higher for the Aligned Matrigel (which supports our hypothesis). Additionally there are slightly more nuclei for the Aligned Matrigel case. 
 ```{r plot advanced Day 3 Btw Alignment}
+knitr::opts_chunk$set(echo = TRUE)
+
 plot_grid(fig_A3, fig_R3, labels = c('A', 'R'))
 plot_grid(fig_AM3, fig_RM3, labels = c('AM', 'RM'))
 ```
-#Plot the graphs for Day 5. Between aligned and random, the intensity is similar for the aligned condition and the random, but there are more nuclei in the random case. Between the Aligned Matrigel and Random Matrigel case, the intensity is higher for the Aligned Matrigel (which supports our hypothesis), but there looks to be  more nuclei for the Random Matrigel case. 
+Plot the graphs for Day 5. Between aligned and random, the intensity is similar for the aligned condition and the random, but there are more nuclei in the random case. Between the Aligned Matrigel and Random Matrigel case, the intensity is higher for the Aligned Matrigel (which supports our hypothesis), but there looks to be  more nuclei for the Random Matrigel case. 
 ```{r plot advanced Day 5 Btw Alignment}
+knitr::opts_chunk$set(echo = TRUE)
+
 plot_grid(fig_A5, fig_R5, labels = c('A', 'R'))
 plot_grid(fig_AM5, fig_RM5, labels = c('AM', 'RM'))
 ```
-#Now it is useful to plot the graphs for Day 3 and 5 for the Matrigel groups. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the random matrigel, and there are more nuclei in the Day 5 case. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Aligned matrigel, and there are slightly more nuclei in the Day 5 Aligned Matrigel case.
+Now it is useful to plot the graphs for Day 3 and 5 for the Matrigel groups. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the random matrigel, and there are more nuclei in the Day 5 case. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Aligned matrigel, and there are slightly more nuclei in the Day 5 Aligned Matrigel case.
 ```{r plot Aligned Matrigel and Random Matrigel Btw Days}
+knitr::opts_chunk$set(echo = TRUE)
+
 plot_grid(fig_A3, fig_AM5, labels = c('AM3', 'AM5'))
 plot_grid(fig_RM3, fig_RM5, labels = c('RM3', 'RM5'))
 ```
-#Now it is useful to plot the graphs for Day 3 and 5 for the Aligned and Random groups, respectively. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Random, and there are more nuclei in the Day 5 case. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Aligned , but there are slightly more nuclei in the Day 3 Aligned  case. I think this could be due to alogirithmic error in not accounting for proper background in the z-direction of the images.
+Now it is useful to plot the graphs for Day 3 and 5 for the Aligned and Random groups, respectively. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Random, and there are more nuclei in the Day 5 case. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Aligned , but there are slightly more nuclei in the Day 3 Aligned  case. I think this could be due to alogirithmic error in not accounting for proper background in the z-direction of the images.
 ```{r plot Aligned and Random Btw Days}
+knitr::opts_chunk$set(echo = TRUE)
+
 plot_grid(fig_R3, fig_R5, labels = c('R3', 'R5'))
 plot_grid(fig_A3, fig_A5, labels = c('A3', 'A5'))
 ```
