@@ -2,13 +2,18 @@
 title: "Data Visualization Project"
 author: "Madison Pickett"
 date: "5/8/2022"
-output: html_document
+output: 
+ html_document:
+   toc: true
+   toc_float: true
+theme: lumen
 ---
 Individual Data Visualization Assignment (Noted: I have uploaded all the datasets in the repo, but did not change the links, so they link back to a repo that is being used for my research.)
 This project looks at the glucose uptake of 231 (highly invasive) cancer cells on biomaterial meshes of different alignments. Our hypothesis is that as the alignment increases (becomes more aligned), the cancer cells will adopt a more invasive phenotype and trend toward glycolysis. A major marker of glycolysis is glucose uptake, which can be measured using NBD glucose (a fluorescent glucose analog). This experiment looks at NBD uptake at a per cell level, at two different time points (Day 3 and Day 5). A python script was used to process the images, where many parameters concerning the NBD's properties were measured. We were specifically looking at the integrated intensity per cell. The number of cells was characterized by the number of Draq5 nuclei counted by the script (Draq5 is a fluorescent nuclear dye). From here the average intensities per cell were calculated on a per image basis and then by a per condition basis (Random, Aligned, Random Matrigel, Aligned Matrigel) for each biological replicate (n=2) and technical replicate (N=3).
 
-# Random Matrigel N=2 (Day 3)
+Random Matrigel N=2 (Day 3)
 ```{r}
+library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
@@ -153,7 +158,7 @@ mean_N2_231_AM_Day3<- d_nbd_n2_AM_231_meanint$meanIntnbd1/d_draq_n2_AM_231$n
 mean_tot_N2_231_AM_Day3<- (sum(d_nbd_n2_AM_231_meanint$meanIntnbd1/d_draq_n2_AM_231$n))/nrow(d_nbd_n2_AM_231_meanint)
 
 ```
-# Random Matrigel N=2 (Day 3)
+Random Matrigel N=2 (Day 3)
 ```{r D3 RM}
 d_nbd_n2_RM_231_meanint<- d_nbd_n2_RM_231%>%
   group_by(ImageNumber)%>%
@@ -166,7 +171,7 @@ d_draq_n2_RM_231<- d_draq_n2_RM_231%>%
 mean_N2_231_RM_Day3<- d_nbd_n2_RM_231_meanint$meanIntnbd1/d_draq_n2_RM_231$n
 mean_tot_N2_231_RM_Day3<- (sum(d_nbd_n2_RM_231_meanint$meanIntnbd1/d_draq_n2_RM_231$n))/nrow(d_nbd_n2_RM_231_meanint)
 ```
-# Random N=2 (Day 3)
+Random N=2 (Day 3)
 ```{r D3 R}
 d_nbd_n2_R_231_meanint<- d_nbd_n2_R_231%>%
   group_by(ImageNumber)%>%
@@ -179,7 +184,7 @@ d_draq_n2_R_231<- d_draq_n2_R_231%>%
 mean_N2_231_R_Day3<- d_nbd_n2_R_231_meanint$meanIntnbd1/d_draq_n2_R_231$n
 mean_tot_N2_231_R_Day3<- (sum(d_nbd_n2_R_231_meanint$meanIntnbd1/d_draq_n2_R_231$n))/nrow(d_nbd_n2_R_231_meanint)
 ```
-# Aligned N=2 (Day 3)
+Aligned N=2 (Day 3)
 ```{r D3 A}
 d_nbd_n2_A_231_meanint<- d_nbd_n2_A_231%>%
   group_by(ImageNumber)%>%
@@ -192,7 +197,7 @@ d_draq_n2_A_231<- d_draq_n2_A_231%>%
 mean_N2_231_A_Day3<- d_nbd_n2_A_231_meanint$meanIntnbd1/d_draq_n2_A_231$n
 mean_tot_N2_231_A_Day3<- (sum(d_nbd_n2_A_231_meanint$meanIntnbd1/d_draq_n2_A_231$n))/nrow(d_nbd_n2_A_231_meanint)
 ```
-# Random Matrigel N=2 (Day 5)
+Random Matrigel N=2 (Day 5)
 ```{r D5 RM}
 d_nbd_n2_RM5_231_meanint<- d_nbd_n2_RM5_231%>%
   group_by(ImageNumber)%>%
@@ -205,8 +210,8 @@ d_draq_n2_RM5_231<- d_draq_n2_RM5_231%>%
 mean_N2_231_RM_Day5<- d_nbd_n2_RM5_231_meanint$meanIntnbd1/d_draq_n2_RM5_231$n
 mean_tot_N2_231_RM_Day5<- (sum(d_nbd_n2_RM5_231_meanint$meanIntnbd1/d_draq_n2_RM5_231$n))/nrow(d_nbd_n2_RM5_231_meanint)
 ```
-# Aligned Matrigel N=2 (Day 5)
 
+Aligned Matrigel N=2 (Day 5)
 ```{r D5 AM}
 d_nbd_n2_AM5_231_meanint<- d_nbd_n2_AM5_231%>%
   group_by(ImageNumber)%>%
@@ -219,7 +224,7 @@ d_draq_n2_AM5_231<- d_draq_n2_AM5_231%>%
 mean_N2_231_AM_Day5<- d_nbd_n2_AM5_231_meanint$meanIntnbd1/d_draq_n2_AM5_231$n
 mean_tot_N2_231_AM_Day5<- (sum(d_nbd_n2_AM5_231_meanint$meanIntnbd1/d_draq_n2_AM5_231$n))/nrow(d_nbd_n2_AM5_231_meanint)
 ```
-# Aligned N=2 (Day 5)
+Aligned N=2 (Day 5)
 
 ```{r D5 A}
 d_nbd_n2_A5_231_meanint<- d_nbd_n2_A5_231%>%
@@ -233,7 +238,7 @@ d_draq_n2_A5_231<- d_draq_n2_A5_231%>%
 mean_N2_231_A_Day5<- d_nbd_n2_A5_231_meanint$meanIntnbd1/d_draq_n2_A5_231$n
 mean_tot_N2_231_A_Day5<- (sum(d_nbd_n2_A5_231_meanint$meanIntnbd1/d_draq_n2_A5_231$n))/nrow(d_nbd_n2_A5_231_meanint)
 ```
-# Random N=2 (Day 5)
+Random N=2 (Day 5)
 
 ```{r D5 R}
 d_nbd_n2_R5_231_meanint<- d_nbd_n2_R5_231%>%
@@ -248,7 +253,7 @@ mean_N2_231_R_Day5<- d_nbd_n2_R5_231_meanint$meanIntnbd1/d_draq_n2_R5_231$n
 
 mean_tot_N2_231_R_Day5<- (sum(d_nbd_n2_R5_231_meanint$meanIntnbd1/d_draq_n2_R5_231$n))/nrow(d_nbd_n2_R5_231_meanint)
 ```
-# Random N=1 (Day 5)
+Random N=1 (Day 5)
 ```{r D5 R N1}
 d_nbd_n1_R5_231_meanint<- d_nbd_n1_R5_231%>%
   group_by(ImageNumber)%>%
@@ -262,7 +267,7 @@ mean_N1_231_R_Day5<- d_nbd_n1_R5_231_meanint$meanIntnbd1/d_draq_n1_R5_231$n
 
 mean_tot_N1_231_R_Day5<- (sum(d_nbd_n1_R5_231_meanint$meanIntnbd1/d_draq_n1_R5_231$n))/nrow(d_nbd_n1_R5_231_meanint)
 ```
-# Random Matrigel N=1 (Day 5)
+Random Matrigel N=1 (Day 5)
 ```{r D5 RM N1}
 
 d_nbd_n1_RM5_231_meanint<- d_nbd_n1_RM5_231%>%
@@ -277,7 +282,7 @@ mean_N1_231_RM_Day5<- d_nbd_n1_RM5_231_meanint$meanIntnbd1/d_draq_n1_RM5_231$n
 
 mean_tot_N1_231_RM_Day5<- (sum(d_nbd_n1_RM5_231_meanint$meanIntnbd1/d_draq_n1_RM5_231$n))/nrow(d_nbd_n1_RM5_231_meanint)
 ```
-# Aligned Matrigel N=1 (Day 5)
+Aligned Matrigel N=1 (Day 5)
 ```{r D5 AM N1}
 d_nbd_n1_AM5_231_meanint<- d_nbd_n1_AM5_231%>%
   group_by(ImageNumber)%>%
@@ -291,8 +296,7 @@ mean_N1_231_AM_Day5<- d_nbd_n1_AM5_231_meanint$meanIntnbd1/d_draq_n1_AM5_231$n
 
 mean_tot_N1_231_AM_Day5<- (sum(d_nbd_n1_AM5_231_meanint$meanIntnbd1/d_draq_n1_AM5_231$n))/nrow(d_nbd_n1_AM5_231_meanint)
 ```
-# Aligned N=1 (Day 5)
-
+Aligned N=1 (Day 5)
 ```{r D5 A N1}
 d_nbd_n1_A5_231_meanint<- d_nbd_n1_A5_231%>%
   group_by(ImageNumber)%>%
@@ -306,8 +310,7 @@ mean_N1_231_A_Day5<- d_nbd_n1_A5_231_meanint$meanIntnbd1/d_draq_n1_A5_231$n
 
 mean_tot_N1_231_A_Day5<- (sum(d_nbd_n1_A5_231_meanint$meanIntnbd1/d_draq_n1_A5_231$n))/nrow(d_nbd_n1_A5_231_meanint)
 ```
-# Aligned N=1 (Day 3)
-
+Aligned N=1 (Day 3)
 ```{r D3 A N1}
 d_nbd_n1_A3_231_meanint<- d_nbd_n1_A3_231%>%
   group_by(ImageNumber)%>%
@@ -321,7 +324,7 @@ mean_N1_231_A_Day3<- d_nbd_n1_A3_231_meanint$meanIntnbd1/d_draq_n1_A3_231$n
 
 mean_tot_N1_231_A_Day3<- (sum(d_nbd_n1_A3_231_meanint$meanIntnbd1/d_draq_n1_A3_231$n))/nrow(d_nbd_n1_A3_231_meanint)
 ```
-# Aligned Matrigel N=1 (Day 3)
+Aligned Matrigel N=1 (Day 3)
 ```{r D3 AM N1}
 d_nbd_n1_AM3_231_meanint<- d_nbd_n1_AM3_231%>%
   group_by(ImageNumber)%>%
@@ -335,8 +338,7 @@ mean_N1_231_AM_Day3<- d_nbd_n1_AM3_231_meanint$meanIntnbd1/d_draq_n1_AM3_231$n
 
 mean_tot_N1_231_AM_Day3<- (sum(d_nbd_n1_AM3_231_meanint$meanIntnbd1/d_draq_n1_AM3_231$n))/nrow(d_nbd_n1_AM3_231_meanint)
 ```
-# Random Matrigel N=1 (Day 3)
-
+Random Matrigel N=1 (Day 3)
 ```{r D3 RM N1}
 d_nbd_n1_RM3_231_meanint<- d_nbd_n1_RM3_231%>%
   group_by(ImageNumber)%>%
@@ -350,8 +352,7 @@ mean_N1_231_RM_Day3<- d_nbd_n1_RM3_231_meanint$meanIntnbd1/d_draq_n1_RM3_231$n
 
 mean_tot_N1_231_RM_Day3<- (sum(d_nbd_n1_RM3_231_meanint$meanIntnbd1/d_draq_n1_RM3_231$n))/nrow(d_nbd_n1_RM3_231_meanint)
 ```
-# Random N=1 (Day 3)
-
+Random N=1 (Day 3)
 ```{r D3 R N1}
 d_nbd_n1_R3_231_meanint<- d_nbd_n1_R3_231%>%
   group_by(ImageNumber)%>%
@@ -365,8 +366,7 @@ mean_N1_231_R_Day3<- d_nbd_n1_R3_231_meanint$meanIntnbd1/d_draq_n1_R3_231$n
 
 mean_tot_N1_231_R_Day3<- (sum(d_nbd_n1_R3_231_meanint$meanIntnbd1/d_draq_n1_R3_231$n))/nrow(d_nbd_n1_R3_231_meanint)
 ```
-# Random N=3 (Day 5)
-
+Random N=3 (Day 5)
 ```{r D5 R N3}
 d_nbd_n3_R5_231_meanint<- d_nbd_n3_R5_231%>%
   group_by(ImageNumber)%>%
@@ -380,8 +380,7 @@ mean_N3_231_R_Day5<- d_nbd_n3_R5_231_meanint$meanIntnbd1/d_draq_n3_R5_231$n
 
 mean_tot_N3_231_R_Day5<- (sum(d_nbd_n3_R5_231_meanint$meanIntnbd1/d_draq_n3_R5_231$n))/nrow(d_nbd_n3_R5_231_meanint)
 ```
-# Random Matrigel N=3 (Day 5)
-
+Random Matrigel N=3 (Day 5)
 ```{r D5 RM N3}
 d_nbd_n3_RM5_231_meanint<- d_nbd_n3_RM5_231%>%
   group_by(ImageNumber)%>%
@@ -395,7 +394,7 @@ mean_N3_231_RM_Day5<- d_nbd_n3_RM5_231_meanint$meanIntnbd1/d_draq_n3_RM5_231$n
 
 mean_tot_N3_231_RM_Day5<- (sum(d_nbd_n3_RM5_231_meanint$meanIntnbd1/d_draq_n3_RM5_231$n))/nrow(d_nbd_n3_RM5_231_meanint)
 ```
-# Aligned Matrigel N=3 (Day 5)
+Aligned Matrigel N=3 (Day 5)
 ```{r D5 AM N3}
 d_nbd_n3_AM5_231_meanint<- d_nbd_n3_AM5_231%>%
   group_by(ImageNumber)%>%
@@ -409,7 +408,7 @@ mean_N3_231_AM_Day5<- d_nbd_n3_AM5_231_meanint$meanIntnbd1/d_draq_n3_AM5_231$n
 
 mean_tot_N3_231_AM_Day5<- (sum(d_nbd_n3_AM5_231_meanint$meanIntnbd1/d_draq_n3_AM5_231$n))/nrow(d_nbd_n3_AM5_231_meanint)
 ```
-# Aligned N=3 (Day 5)
+Aligned N=3 (Day 5)
 ```{r D5 A N3}
 d_nbd_n3_A5_231_meanint<- d_nbd_n3_A5_231%>%
   group_by(ImageNumber)%>%
@@ -423,7 +422,7 @@ mean_N3_231_A_Day5<- d_nbd_n3_A5_231_meanint$meanIntnbd1/d_draq_n3_A5_231$n
 
 mean_tot_N3_231_A_Day5<- (sum(d_nbd_n3_A5_231_meanint$meanIntnbd1/d_draq_n3_A5_231$n))/nrow(d_nbd_n3_A5_231_meanint)
 ```
-# Aligned N=3 (Day 3)
+Aligned N=3 (Day 3)
 ```{r D3 A N3}
 d_nbd_n3_A3_231_meanint<- d_nbd_n3_A3_231%>%
   group_by(ImageNumber)%>%
@@ -437,7 +436,7 @@ mean_N3_231_A_Day3<- d_nbd_n3_A3_231_meanint$meanIntnbd1/d_draq_n3_A3_231$n
 
 mean_tot_N3_231_A_Day3<- (sum(d_nbd_n3_A3_231_meanint$meanIntnbd1/d_draq_n3_A3_231$n))/nrow(d_nbd_n3_A3_231_meanint)
 ```
-# Aligned Matrigel N=3 (Day 3)
+Aligned Matrigel N=3 (Day 3)
 ```{r D3 AM N3}
 d_nbd_n3_AM3_231_meanint<- d_nbd_n3_AM3_231%>%
   group_by(ImageNumber)%>%
@@ -451,7 +450,7 @@ mean_N3_231_AM_Day3<- d_nbd_n3_AM3_231_meanint$meanIntnbd1/d_draq_n3_AM3_231$n
 
 mean_tot_N3_231_AM_Day3<- (sum(d_nbd_n3_AM3_231_meanint$meanIntnbd1/d_draq_n3_AM3_231$n))/nrow(d_nbd_n3_AM3_231_meanint)
 ```
-# Random Matrigel N=3 (Day 3)
+Random Matrigel N=3 (Day 3)
 ```{r D3 RM N3}
 d_nbd_n3_RM3_231_meanint<- d_nbd_n3_RM3_231%>%
   group_by(ImageNumber)%>%
@@ -465,7 +464,7 @@ mean_N3_231_RM_Day3<- d_nbd_n3_RM3_231_meanint$meanIntnbd1/d_draq_n3_RM3_231$n
 
 mean_tot_N3_231_RM_Day3<- (sum(d_nbd_n3_RM3_231_meanint$meanIntnbd1/d_draq_n3_RM3_231$n))/nrow(d_nbd_n3_RM3_231_meanint)
 ```
-# Random N=3 (Day 3)
+Random N=3 (Day 3)
 ```{r D3 R N3}
 d_nbd_n3_R3_231_meanint<- d_nbd_n3_R3_231%>%
   group_by(ImageNumber)%>%
@@ -480,6 +479,8 @@ mean_N3_231_R_Day3<- d_nbd_n3_R3_231_meanint$meanIntnbd1/d_draq_n3_R3_231$n
 mean_tot_N3_231_R_Day3<- (sum(d_nbd_n3_R3_231_meanint$meanIntnbd1/d_draq_n3_R3_231$n))/nrow(d_nbd_n3_R3_231_meanint)
 ```
 A good way (but very basic) is to use a barplot to plot the means with error bars that represent the standard errors of the means. I did this below-- also I know there are probably cleaner ways to go about this, but I wanted standard error for the image aggregates instead of the concentated totals so I didn't use ggplot becuase it was easier for me to do custom error bars this way! 
+
+# Basic Visualization
 ```{r plot}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -545,6 +546,8 @@ RM_AM_Day5
 ```
 Actual Data Visualization: The data visualization can probably be spiced up a bit... it is still relatively boring data. I was orgininally wanting to do something more interactive that would change intensity of brightness, but wasn't really sure how it would be applicable to what I wanted to represent. The samples that included the matrigel coating are more similar to the breast microenvironment and are more supportive of cellular proliferation-- meaning there are a lot more cells per image. One issue with the script and this dataset is that when we are imaging, the z-planes of going through the scaffold can produce a lot of background fluorescence from the cells that are embedded in the scaffold (fluorescing in a different z plane). I thought it would be cool to do something where the number of cells and intensity was represented on a single plot. My best option was looking at a heat map where we can colormetrically represent the intensity and represent the number of cells per image using the size of the data points. 
 
+
+# Advanced Visualization
 ```{r plot advanced Day 3}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -663,6 +666,8 @@ fig_AM5<-ggplot(df_sum_AM5, aes(x= Image_Number, y = Image__Number))+
   scale_size_continuous(range = c(1,9))+labs(title = str_wrap(tit_AM5, 25))
 ```
 Now it is useful to plot the graphs for Day 3. Between aligned and random, the intensity is less for the aligned condition than for the random, but there are more nuclei in the aligned case. Between the Aligned Matrigel and Random Matrigel case, the intensity is higher for the Aligned Matrigel (which supports our hypothesis). Additionally there are slightly more nuclei for the Aligned Matrigel case. 
+
+# Advanced Plot Between Alignments Day 3
 ```{r plot advanced Day 3 Btw Alignment}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -670,6 +675,8 @@ plot_grid(fig_A3, fig_R3, labels = c('A', 'R'))
 plot_grid(fig_AM3, fig_RM3, labels = c('AM', 'RM'))
 ```
 Plot the graphs for Day 5. Between aligned and random, the intensity is similar for the aligned condition and the random, but there are more nuclei in the random case. Between the Aligned Matrigel and Random Matrigel case, the intensity is higher for the Aligned Matrigel (which supports our hypothesis), but there looks to be  more nuclei for the Random Matrigel case. 
+
+# Advanced Plot Between Alignments Day 5
 ```{r plot advanced Day 5 Btw Alignment}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -677,6 +684,9 @@ plot_grid(fig_A5, fig_R5, labels = c('A', 'R'))
 plot_grid(fig_AM5, fig_RM5, labels = c('AM', 'RM'))
 ```
 Now it is useful to plot the graphs for Day 3 and 5 for the Matrigel groups. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the random matrigel, and there are more nuclei in the Day 5 case. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Aligned matrigel, and there are slightly more nuclei in the Day 5 Aligned Matrigel case.
+
+# Advanced Plot Between Days (Matrigel)
+
 ```{r plot Aligned Matrigel and Random Matrigel Btw Days}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -684,6 +694,8 @@ plot_grid(fig_A3, fig_AM5, labels = c('AM3', 'AM5'))
 plot_grid(fig_RM3, fig_RM5, labels = c('RM3', 'RM5'))
 ```
 Now it is useful to plot the graphs for Day 3 and 5 for the Aligned and Random groups, respectively. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Random, and there are more nuclei in the Day 5 case. Between Day 3 and Day 5, the intensity is less for the Day 3 condition than the Day 5 for the Aligned , but there are slightly more nuclei in the Day 3 Aligned  case. I think this could be due to alogirithmic error in not accounting for proper background in the z-direction of the images.
+
+# Advanced Plot Between Days (Regular)
 ```{r plot Aligned and Random Btw Days}
 knitr::opts_chunk$set(echo = TRUE)
 
